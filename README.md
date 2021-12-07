@@ -1,1 +1,1 @@
-# rate-limiting-algorithms
+# Rate Limiting Algorithms
