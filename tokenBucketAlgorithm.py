@@ -13,8 +13,7 @@ class Tokencapacity:
     def rate_limit(self, request_packet):
         current = time.time()
         time_passed = current - self.last_check
-        self.last_check = time_passed
-
+        self.last_check = current
         self.capacity = self.capacity + (time_passed*(self.no_of_tokens/self.time_unit))
 
         if self.capacity > self.no_of_tokens:
