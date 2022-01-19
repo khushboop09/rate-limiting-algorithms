@@ -26,6 +26,19 @@
 
     The advantage of leaky bucket over token bucket algorithm is that we will have stable outflow rate of the requests, since the requests are processed at a fixed rate.
 
-3. Fixed Window Counter
-4. Sliding Window Log
-5. Sliding Window Counter
+3. Fixed Window Counter Algorithm
+
+    The fixed window counter algorithm works as follows:
+
+    - The timeline is divided into fix-sized time windows and a counter is assigned for each window.
+
+    - Each request increments the counter by one.
+
+    - Once the counter reaches the predefined threshold value, new requests are dropped until the new window starts.
+
+    For example: fixed-size time window is 3 requests per second, therefore we will divide the timeline into 1 sec windows. In each window if more than 3 requests are received, the extra requests are dropped. 
+
+    The biggest con of this algorithm is sudden traffic spike can be noticeable at the edge of a window.
+
+4. Sliding Window Log Algorithm
+5. Sliding Window Counter Algorithm
