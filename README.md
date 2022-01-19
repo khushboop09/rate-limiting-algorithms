@@ -41,4 +41,15 @@
     The biggest con of this algorithm is sudden traffic spike can be noticeable at the edge of a window.
 
 4. Sliding Window Log Algorithm
+
+    The sliding window log algorithm works as follows:
+
+    - We keep track of request timestamps for each user.
+
+    - When a new request comes remove all the outdated timestamps i.e. timestamps older than the start of the current time window.
+
+    - Add new request timestamp to the log.
+
+    - If the log size is same or lower than the allowed count, request is accepted. Otherwise, it is rejected.
+
 5. Sliding Window Counter Algorithm
