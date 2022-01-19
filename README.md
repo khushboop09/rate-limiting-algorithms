@@ -53,3 +53,25 @@
     - If the log size is same or lower than the allowed count, request is accepted. Otherwise, it is rejected.
 
 5. Sliding Window Counter Algorithm
+
+    Sliding window counter algorithm is a hybrid of fixed window counter and sliding windlow log algorithms.
+
+    Like the fixed window algorithm, we track a counter for each fixed window. Next, we account for a weighted value of the previous window's request rate based on the current timestamp to smooth out bursts of traffic.
+
+    It works as follows:
+
+    Taking an example: Suppose our rate limit is 7 requests per second. There were 5 requests in the previous time unit and 3 requests in the current time unit.
+
+    - The no. of requests in the sliding window is calculated using the following formula:
+
+        ``` estimated_count = (previous window request count * overlap percentage of the sliding window and previous window) + requests in current window ```
+
+        i.e. ``` estimated count = (5 * 0.7) + 3 = 6.5 ```
+
+        6.5 is less than our rate limit of 7 requests/minute, therefore the requests will be allowed to go through. However, the limit will be reached if we get one more request.
+
+
+
+References:
+- https://dev.to/satrobit/rate-limiting-using-the-sliding-window-algorithm-5fjn
+- System Design Interview Book by Alex Xu.

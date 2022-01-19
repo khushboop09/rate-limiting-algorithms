@@ -1,21 +1,19 @@
-import os
-clear = lambda: os.system('clear')
 import time
 
 class Buffer:
     def __init__(self, buffer_size = int, buffer = []):
         self.buffer_size = buffer_size
-        self.buffer = buffer
+        self.queue = buffer
 
     def is_empty(self):
-        if len(self.buffer) == 0:
+        if len(self.queue) == 0:
             return True
 
     def __str__(self):
-        return str([str(self.buffer_size), str(self.buffer)])
+        return str([str(self.buffer_size), str(self.queue)])
 
 class LeakyBucket:
-    def __init__(self, capacity, output_rate, buffer_size, forward_callback, drop_callback) -> None:
+    def __init__(self, capacity, output_rate, buffer_size, forward_callback, drop_callback):
         self.capacity = capacity
         self.buffer = Buffer(buffer_size)
         self.output_rate = output_rate
@@ -31,24 +29,24 @@ class LeakyBucket:
                     self.forward_callback(request_packet[i])
                 else:
                     if count < self.buffer.buffer_size:
-                        self.buffer.buffer.append(request_packet[i])
-                        count = len(self.buffer.buffer)
+                        self.buffer.queue.append(request_packet[i])
+                        count = len(self.buffer.queue)
                     else:
                         self.drop_callback(request_packet[i])
         else:
             j=0
-            for i in range(0, len(request_packet)+len(self.buffer.buffer)):
+            for i in range(0, len(request_packet)+len(self.buffer.queue)):
                 if i < self.output_rate:
-                    if len(self.buffer.buffer):
-                        self.forward_callback(self.buffer.buffer[0])
-                        del self.buffer.buffer[0]
+                    if self.buffer.is_empty():
+                        self.forward_callback(self.buffer.queue[0])
+                        del self.buffer.queue[0]
                     else:
                         self.forward_callback(request_packet[j])
                         j += 1
                 else:
-                    if len(self.buffer.buffer) < self.buffer.buffer_size:
+                    if len(self.buffer.queue) < self.buffer.buffer_size:
                         if j < len(request_packet):
-                            self.buffer.buffer.append(request_packet[j])
+                            self.buffer.queue.append(request_packet[j])
                             j += 1
                     else:
                         if j < len(request_packet):
